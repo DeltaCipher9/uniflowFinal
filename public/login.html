@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFlow - Log in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body class="auth-body">
+
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="logo-badge">🎓</div>
+      <div>
+        <h1>UniFlow</h1>
+        <span>University Life OS</span>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <button type="button" id="tabLogin" class="auth-tab active">Log in</button>
+      <button type="button" id="tabSignup" class="auth-tab">Create account</button>
+    </div>
+
+    <div id="authError" class="auth-error" role="alert" style="display:none;"></div>
+
+    <!-- LOG IN -->
+    <form id="loginForm" autocomplete="on">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" class="form-control" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" class="form-control" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary auth-submit">Log in</button>
+    </form>
+
+    <!-- SIGN UP -->
+    <form id="signupForm" autocomplete="on" style="display:none;">
+      <div class="form-group">
+        <label for="signupName">Full name</label>
+        <input type="text" id="signupName" class="form-control" autocomplete="name" maxlength="80" required>
+      </div>
+      <div class="form-group">
+        <label for="signupProgram">Program / Department <span style="font-weight:500;color:#94a3b8;">(optional)</span></label>
+        <input type="text" id="signupProgram" class="form-control" placeholder="e.g. B.Sc Computer Science" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" class="form-control" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label for="signupPassword">Password <span style="font-weight:500;color:#94a3b8;">(at least 8 characters)</span></label>
+        <input type="password" id="signupPassword" class="form-control" autocomplete="new-password" minlength="8" maxlength="72" required>
+      </div>
+      <button type="submit" class="btn btn-primary auth-submit">Create my account</button>
+    </form>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

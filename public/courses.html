@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFlow - Course Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="courses">
+
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">🎓</div>
+        <div class="logo-text">
+          <h1>UniFlow</h1>
+          <span>University Life OS</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-item"><span>📊</span> <span>Dashboard</span></a></li>
+        <li><a href="scanner.html" class="nav-item"><span>✨</span> <span>Notice & PDF AI</span> <span class="nav-tag">AI</span></a></li>
+        <li><a href="calendar.html" class="nav-item"><span>📅</span> <span>Smart Calendar</span></a></li>
+        <li><a href="courses.html" class="nav-item active"><span>📚</span> <span>Course Hub</span></a></li>
+        <li><a href="tasks.html" class="nav-item"><span>✅</span> <span>Assignments & Tests</span></a></li>
+        <li><a href="projects.html" class="nav-item"><span>👥</span> <span>Group Projects</span></a></li>
+        <li><a href="analytics.html" class="nav-item"><span>📈</span> <span>Study Analytics</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <strong>Fall Semester 2026</strong>
+        <div style="font-size: 0.72rem; color: #94a3b8;">Week 5 of 14</div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="search-input-group">
+          <span>🔍</span>
+          <input type="text" placeholder="Search courses...">
+        </div>
+        <div class="topbar-actions">
+          <a href="tasks.html" class="icon-btn" title="Upcoming Deadlines">
+            <span>🔔</span>
+            <span class="notification-badge">0</span>
+          </a>
+          <div class="user-profile">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+              <div class="name">John Doe</div>
+              <div class="role">B.Sc Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-body">
+        
+        <div class="page-header">
+          <div>
+            <h2>📚 Course Hub</h2>
+            <p>Manage all your enrolled academic courses, professors, class schedules, and room venues.</p>
+          </div>
+          <button class="btn btn-primary" onclick="document.getElementById('addCourseDialog').showModal()">
+            <span>➕</span> Add Course
+          </button>
+        </div>
+
+        <!-- Courses Grid -->
+        <div id="coursesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Native HTML5 Add Course Modal Dialog -->
+  <dialog id="addCourseDialog" class="modal-card">
+    <div class="modal-header">
+      <h3 style="font-size: 1.15rem; font-weight: 800;">Add New Course</h3>
+      <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="document.getElementById('addCourseDialog').close()">✕</button>
+    </div>
+    <form onsubmit="handleAddCourseSubmit(event)" class="modal-body">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Course Code *</label>
+          <input type="text" id="newCourseCode" class="form-control" placeholder="e.g. CSE 301" required>
+        </div>
+        <div class="form-group">
+          <label>Credit Hours</label>
+          <input type="number" id="newCourseCredits" class="form-control" value="3" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Course Name *</label>
+        <input type="text" id="newCourseName" class="form-control" placeholder="e.g. Database Management Systems" required>
+      </div>
+
+      <div class="form-group">
+        <label>Instructor / Professor</label>
+        <input type="text" id="newCourseInstructor" class="form-control" placeholder="e.g. Dr. Alan Turing">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Classroom / Lab</label>
+          <input type="text" id="newCourseRoom" class="form-control" placeholder="e.g. Room 402">
+        </div>
+        <div class="form-group">
+          <label>Schedule Timing</label>
+          <input type="text" id="newCourseSchedule" class="form-control" placeholder="e.g. Mon, Wed 10:00 AM">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('addCourseDialog').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Course</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

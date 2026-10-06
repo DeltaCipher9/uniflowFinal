@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFlow - Smart Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="calendar">
+
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">🎓</div>
+        <div class="logo-text">
+          <h1>UniFlow</h1>
+          <span>University Life OS</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-item"><span>📊</span> <span>Dashboard</span></a></li>
+        <li><a href="scanner.html" class="nav-item"><span>✨</span> <span>Notice & PDF AI</span> <span class="nav-tag">AI</span></a></li>
+        <li><a href="calendar.html" class="nav-item active"><span>📅</span> <span>Smart Calendar</span></a></li>
+        <li><a href="courses.html" class="nav-item"><span>📚</span> <span>Course Hub</span></a></li>
+        <li><a href="tasks.html" class="nav-item"><span>✅</span> <span>Assignments & Tests</span></a></li>
+        <li><a href="projects.html" class="nav-item"><span>👥</span> <span>Group Projects</span></a></li>
+        <li><a href="analytics.html" class="nav-item"><span>📈</span> <span>Study Analytics</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <strong>Fall Semester 2026</strong>
+        <div style="font-size: 0.72rem; color: #94a3b8;">Week 5 of 14</div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="search-input-group">
+          <span>🔍</span>
+          <input type="text" placeholder="Search calendar events...">
+        </div>
+        <div class="topbar-actions">
+          <a href="tasks.html" class="icon-btn" title="Upcoming Deadlines">
+            <span>🔔</span>
+            <span class="notification-badge">0</span>
+          </a>
+          <div class="user-profile">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+              <div class="name">John Doe</div>
+              <div class="role">B.Sc Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-body">
+        
+        <!-- Header Controls -->
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px;">
+          <div>
+            <h2 id="calendarMonthYear" style="font-size: 1.4rem; font-weight: 800; color: #0f172a;">September 2026</h2>
+            <p style="font-size: 0.8rem; color: #64748b;">Interactive Academic Deadline & Exam Grid</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-secondary" onclick="prevCalendarMonth()">◀ Prev Month</button>
+            <button class="btn btn-secondary" onclick="calendarMonth = new Date().getMonth(); calendarYear = new Date().getFullYear(); renderCalendar();">Today</button>
+            <button class="btn btn-secondary" onclick="nextCalendarMonth()">Next Month ▶</button>
+          </div>
+        </div>
+
+        <div class="split-2col">
+          
+          <!-- Month Grid -->
+          <div class="card">
+            <!-- Day of Week Headers -->
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-bottom: 10px; font-weight: 800; font-size: 0.75rem; color: #94a3b8;">
+              <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+            </div>
+
+            <!-- Calendar Cells -->
+            <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;"></div>
+          </div>
+
+          <!-- Selected Day Schedule Side Drawer -->
+          <div class="card">
+            <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 14px;">
+              <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase;">SELECTED DATE</span>
+              <h3 id="selectedDayLabel" style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">2026-09-05</h3>
+            </div>
+
+            <div id="selectedDayTasksArea">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFlow - Assignments & Deadlines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="tasks">
+
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">🎓</div>
+        <div class="logo-text">
+          <h1>UniFlow</h1>
+          <span>University Life OS</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-item"><span>📊</span> <span>Dashboard</span></a></li>
+        <li><a href="scanner.html" class="nav-item"><span>✨</span> <span>Notice & PDF AI</span> <span class="nav-tag">AI</span></a></li>
+        <li><a href="calendar.html" class="nav-item"><span>📅</span> <span>Smart Calendar</span></a></li>
+        <li><a href="courses.html" class="nav-item"><span>📚</span> <span>Course Hub</span></a></li>
+        <li><a href="tasks.html" class="nav-item active"><span>✅</span> <span>Assignments & Tests</span></a></li>
+        <li><a href="projects.html" class="nav-item"><span>👥</span> <span>Group Projects</span></a></li>
+        <li><a href="analytics.html" class="nav-item"><span>📈</span> <span>Study Analytics</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <strong>Fall Semester 2026</strong>
+        <div style="font-size: 0.72rem; color: #94a3b8;">Week 5 of 14</div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="search-input-group">
+          <span>🔍</span>
+          <input type="text" placeholder="Search deadlines, CTs, exams...">
+        </div>
+        <div class="topbar-actions">
+          <a href="tasks.html" class="icon-btn" title="Upcoming Deadlines">
+            <span>🔔</span>
+            <span class="notification-badge">0</span>
+          </a>
+          <div class="user-profile">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+              <div class="name">John Doe</div>
+              <div class="role">B.Sc Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-body">
+        
+        <div class="page-header">
+          <div>
+            <h2>✅ Assignments & Deadlines</h2>
+            <p>Filter by status, category, or urgency. Never miss another class test, homework, or lab report.</p>
+          </div>
+          <button class="btn btn-primary" onclick="document.getElementById('addTaskDialog').showModal()">
+            <span>➕</span> Add Deadline
+          </button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card" style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary filter-btn" data-filter="all" onclick="setTaskFilter('all')">All</button>
+            <button class="btn btn-secondary filter-btn" data-filter="pending" onclick="setTaskFilter('pending')">Pending</button>
+            <button class="btn btn-secondary filter-btn" data-filter="in_progress" onclick="setTaskFilter('in_progress')">In Progress</button>
+            <button class="btn btn-secondary filter-btn" data-filter="completed" onclick="setTaskFilter('completed')">Completed</button>
+          </div>
+
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">CATEGORY:</span>
+            <button class="btn btn-secondary filter-btn" data-filter="assignment" onclick="setTaskFilter('assignment')" style="padding: 4px 10px; font-size: 0.75rem;">Assignments</button>
+            <button class="btn btn-secondary filter-btn" data-filter="ct" onclick="setTaskFilter('ct')" style="padding: 4px 10px; font-size: 0.75rem;">CTs</button>
+            <button class="btn btn-secondary filter-btn" data-filter="lab" onclick="setTaskFilter('lab')" style="padding: 4px 10px; font-size: 0.75rem;">Labs</button>
+            <button class="btn btn-secondary filter-btn" data-filter="exam" onclick="setTaskFilter('exam')" style="padding: 4px 10px; font-size: 0.75rem;">Exams</button>
+          </div>
+        </div>
+
+        <!-- Task List Area -->
+        <div id="tasksListContainer">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Native HTML5 Add Task Modal Dialog -->
+  <dialog id="addTaskDialog" class="modal-card">
+    <div class="modal-header">
+      <h3 style="font-size: 1.15rem; font-weight: 800;">Add Academic Deadline</h3>
+      <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="document.getElementById('addTaskDialog').close()">✕</button>
+    </div>
+    <form onsubmit="handleAddTaskSubmit(event)" class="modal-body">
+      <div class="form-group">
+        <label>Task Title *</label>
+        <input type="text" id="taskTitle" class="form-control" placeholder="e.g. Lab Report 3 on Optics" required>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Course Code</label>
+          <input type="text" id="taskCourse" class="form-control" placeholder="e.g. CSE 301" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="taskType" class="form-control">
+            <option value="Assignment">Assignment</option>
+            <option value="CT">Class Test (CT)</option>
+            <option value="Lab">Lab Report</option>
+            <option value="Exam">Exam / Midterm</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Due Date *</label>
+          <input type="date" id="taskDueDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="taskPriority" class="form-control">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Notes / Submission Instructions</label>
+        <textarea id="taskDesc" class="form-control" rows="3" placeholder="e.g. Submit PDF via Google Classroom before 11:59 PM."></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('addTaskDialog').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Deadline</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

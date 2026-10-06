@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFlow - Group Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="projects">
+
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">🎓</div>
+        <div class="logo-text">
+          <h1>UniFlow</h1>
+          <span>University Life OS</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-item"><span>📊</span> <span>Dashboard</span></a></li>
+        <li><a href="scanner.html" class="nav-item"><span>✨</span> <span>Notice & PDF AI</span> <span class="nav-tag">AI</span></a></li>
+        <li><a href="calendar.html" class="nav-item"><span>📅</span> <span>Smart Calendar</span></a></li>
+        <li><a href="courses.html" class="nav-item"><span>📚</span> <span>Course Hub</span></a></li>
+        <li><a href="tasks.html" class="nav-item"><span>✅</span> <span>Assignments & Tests</span></a></li>
+        <li><a href="projects.html" class="nav-item active"><span>👥</span> <span>Group Projects</span></a></li>
+        <li><a href="analytics.html" class="nav-item"><span>📈</span> <span>Study Analytics</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <strong>Fall Semester 2026</strong>
+        <div style="font-size: 0.72rem; color: #94a3b8;">Week 5 of 14</div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="search-input-group">
+          <span>🔍</span>
+          <input type="text" placeholder="Search project deliverables...">
+        </div>
+        <div class="topbar-actions">
+          <a href="tasks.html" class="icon-btn" title="Upcoming Deadlines">
+            <span>🔔</span>
+            <span class="notification-badge">0</span>
+          </a>
+          <div class="user-profile">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+              <div class="name">John Doe</div>
+              <div class="role">B.Sc Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-body">
+        
+        <div class="page-header">
+          <div>
+            <h2>👥 Group Project Room</h2>
+            <p>Coordinate term projects, divide lab reports among teammates, and keep everyone accountable.</p>
+          </div>
+        </div>
+
+        <div id="projectsContainer">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
