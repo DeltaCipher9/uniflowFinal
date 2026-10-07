@@ -39,3 +39,24 @@ This project includes `render.yaml` for deployment on Render. The service uses N
 After deployment, Render will provide a public HTTPS URL. The root URL (`/`) is a public UniFlow landing page; the app itself is available through `/login.html` and the dashboard at `/index.html` after login.
 
 The public landing page is prepared for search-engine discovery. To appear for searches such as `UniFlow`, submit the final Render URL to Google Search Console after deployment. Search indexing is controlled by Google and may take time; deployment alone does not guarantee an immediate search result.
+
+
+## Student Profile + Routine AI
+
+UniFlow now includes `profile.html`, where a student can enter personal information and upload a RUET CSE class routine (PDF/PNG/JPG/WEBP). With `OPENAI_API_KEY` configured, the backend sends the routine to the OpenAI Responses API and returns structured academic-year/series/semester/section and class data. The app also links the RUET official website, CSE notices/routine pages, and the RUET CSE Archive as knowledge sources.
+
+Add these environment variables before starting the server:
+
+    OPENAI_API_KEY=your_key_here
+    OPENAI_MODEL=gpt-6-luna
+
+The API key stays on the server; it is never placed in browser JavaScript.
+
+
+## Authentication
+
+- Password fields include a Show/Hide control.
+- Each email can have only one account. Emails are normalized to lowercase and the SQLite `users.email` column has a UNIQUE constraint; the database constraint also protects against concurrent duplicate registrations.
+- Forgot password creates a single-use reset token valid for 30 minutes.
+- For real email delivery, set `RESEND_API_KEY` and `RESEND_FROM_EMAIL`. Resend must be configured for the sender domain. In local development, if those values are absent, the reset URL is printed to the server console instead.
+- Password reset requests intentionally return the same message for existing and non-existing emails to reduce account enumeration.
