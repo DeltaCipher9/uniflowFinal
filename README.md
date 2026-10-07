@@ -1,7 +1,11 @@
 # UniFlow
 
 University Life Operating System: frontend (`public/`) + backend (`server/`).
+## Live Demo
 
+**[Open UniFlow](https://uniflow-x7pp.onrender.com/)**
+
+Live deployment: https://uniflow-x7pp.onrender.com/
 ## Run it
 
 1. Install **Node.js LTS (22.13 or newer)** from https://nodejs.org  (check: `node -v`)
