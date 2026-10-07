@@ -92,7 +92,7 @@ const UniFlowStore = {
   _saveChain: Promise.resolve(),
 
   emptyData() {
-    return { courses: [], tasks: [], projects: [] };
+    return { courses: [], tasks: [], projects: [], profile: {}, routine: null };
   },
 
   async load() {
@@ -100,7 +100,9 @@ const UniFlowStore = {
     this._cache = {
       courses: Array.isArray(data.courses) ? data.courses : [],
       tasks: Array.isArray(data.tasks) ? data.tasks : [],
-      projects: Array.isArray(data.projects) ? data.projects : []
+      projects: Array.isArray(data.projects) ? data.projects : [],
+      profile: data.profile && typeof data.profile === 'object' ? data.profile : {},
+      routine: data.routine && typeof data.routine === 'object' ? data.routine : null
     };
   },
 
@@ -231,6 +233,20 @@ const UniFlowStore = {
       this.saveData(data);
       return newSub;
     }
+  },
+
+  getProfile() {
+    return this.getData().profile || {};
+  },
+
+  saveProfile(profile) {
+    const data = this.getData();
+    data.profile = profile || {};
+    this.saveData(data);
+  },
+
+  getRoutine() {
+    return this.getData().routine || null;
   },
 
   toggleSubtask(projectId, subtaskId) {
@@ -974,6 +990,118 @@ function initAnalyticsPage() {
   }
 }
 
+
+function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[ch])); }
+
+// --- PAGE: Student Profile + Routine Intelligence ---------------------------
+async function initProfilePage() {
+  const profile = UniFlowStore.getProfile();
+  const fields = {
+    fullName: 'profileFullName',
+    studentId: 'profileStudentId',
+    department: 'profileDepartment',
+    program: 'profileProgram',
+    email: 'profileEmail',
+    phone: 'profilePhone',
+    semester: 'profileSemester',
+    section: 'profileSection'
+  };
+  Object.entries(fields).forEach(([key, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = profile[key] || Session.user[key] || '';
+  });
+
+  const routine = UniFlowStore.getRoutine();
+  if (routine) renderRoutineAnalysis(routine.analysis);
+
+  const form = document.getElementById('profileForm');
+  if (form) form.onsubmit = async (e) => {
+    e.preventDefault();
+    const next = {};
+    Object.entries(fields).forEach(([key, id]) => {
+      next[key] = (document.getElementById(id)?.value || '').trim();
+    });
+    next.academicYear = document.getElementById('detectedAcademicYear')?.textContent || '';
+    UniFlowStore.saveProfile(next);
+    try {
+      await Api.request('PUT', '/api/profile', { profile: next });
+      showProfileStatus('Profile saved successfully.');
+    } catch (err) {
+      showProfileStatus(err.message || 'Could not save profile.', true);
+    }
+  };
+}
+
+function showProfileStatus(message, error=false) {
+  const el = document.getElementById('profileStatus');
+  if (el) {
+    el.textContent = message;
+    el.style.display = 'block';
+    el.style.color = error ? '#b91c1c' : '#047857';
+  }
+}
+
+function renderRoutineAnalysis(analysis) {
+  if (!analysis) return;
+  const card = document.getElementById('routineAnalysis');
+  if (card) card.style.display = 'block';
+  const set = (id, value) => { const el=document.getElementById(id); if(el) el.textContent=value || 'Unknown'; };
+  set('detectedAcademicYear', analysis.academicYear);
+  set('detectedSeries', analysis.series);
+  set('detectedSemester', analysis.semester);
+  set('detectedSection', analysis.section);
+  set('detectedConfidence', analysis.confidence != null ? `${Math.round(analysis.confidence * 100)}%` : '—');
+  const list = document.getElementById('routineCourses');
+  if (list) list.innerHTML = (analysis.courses || []).slice(0, 30).map(c =>
+    `<div class="action-item" style="margin-bottom:8px;"><div><strong>${escapeHtml(c.code || '')}</strong> ${escapeHtml(c.name || '')}</div><span class="course-tag">${escapeHtml(c.day || '')} ${escapeHtml(c.start || '')}-${escapeHtml(c.end || '')}</span></div>`
+  ).join('') || '<p style="color:#64748b;">No class rows were confidently extracted.</p>';
+}
+
+async function uploadRoutineFile() {
+  const input = document.getElementById('routineFile');
+  const status = document.getElementById('routineUploadStatus');
+  if (!input?.files?.[0]) return;
+  const file = input.files[0];
+  if (file.size > 10 * 1024 * 1024) { status.textContent='File is larger than 10 MB.'; status.style.color='#b91c1c'; return; }
+  status.textContent = 'Uploading routine and asking Smart AI to detect your academic year…';
+  status.style.color = '#475569';
+  try {
+    const dataUrl = await new Promise((resolve,reject) => {
+      const r = new FileReader();
+      r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file);
+    });
+    const result = await Api.request('POST','/api/routine/analyze',{fileName:file.name,dataUrl});
+    const storeData = UniFlowStore.getData();
+    storeData.routine = { fileName:file.name, mime:file.type, uploadedAt:new Date().toISOString(), analysis:result.analysis };
+    storeData.profile = result.profile || UniFlowStore.getProfile();
+    // Turn confidently extracted routine rows into reusable course records.
+    (result.analysis.courses || []).forEach(c => {
+      if (!c.code || storeData.courses.some(existing => existing.code === c.code)) return;
+      storeData.courses.push({
+        id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        code: c.code,
+        name: c.name || c.code,
+        credits: 0,
+        instructor: '',
+        room: c.room || '',
+        schedule: c.day && c.start ? `${c.day} ${c.start}-${c.end || ''}` : ''
+      });
+    });
+    UniFlowStore.saveData(storeData);
+    renderRoutineAnalysis(result.analysis);
+    status.textContent = `Routine analyzed. Detected ${result.analysis.academicYear || 'academic year'}${result.analysis.series ? ` (${result.analysis.series} series)` : ''}.`;
+    status.style.color='#047857';
+  } catch (err) {
+    status.textContent = err.message || 'Routine analysis failed.';
+    status.style.color='#b91c1c';
+  }
+}
+
+async function syncRutineFromSources() {
+  const el=document.getElementById('sourceStatus');
+  if (el) el.textContent='RUET sources are connected as official reference links for Smart AI.';
+}
+
 // =============================================================================
 // 5. GLOBAL BOOTSTRAPPER (Runs on every page load)
 // =============================================================================
@@ -1003,6 +1131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   else if (page === 'tasks') initTasksPage();
   else if (page === 'projects') initProjectsPage();
   else if (page === 'analytics') initAnalyticsPage();
+  else if (page === 'profile') initProfilePage();
 
   document.documentElement.style.visibility = '';
 });
