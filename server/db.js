@@ -21,6 +21,15 @@ db.exec(`
     created_at    TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
+  CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token_hash TEXT NOT NULL UNIQUE,
+    expires_at TEXT NOT NULL,
+    used_at    TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
   -- Each user's courses/tasks/projects, stored as one JSON document per user.
   CREATE TABLE IF NOT EXISTS user_data (
     user_id    INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UniFlow - Student Profile & Routine AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="profile">
+<div class="app-container">
+<aside class="sidebar">
+  <div class="sidebar-header"><div class="logo-badge">🎓</div><div class="logo-text"><h1>UniFlow</h1><span>University Life OS</span></div></div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-item"><span>📊</span><span>Dashboard</span></a></li>
+    <li><a href="profile.html" class="nav-item active"><span>👤</span><span>My Profile & Routine</span><span class="nav-tag">AI</span></a></li>
+    <li><a href="scanner.html" class="nav-item"><span>✨</span><span>Notice & PDF AI</span><span class="nav-tag">AI</span></a></li>
+    <li><a href="calendar.html" class="nav-item"><span>📅</span><span>Smart Calendar</span></a></li>
+    <li><a href="courses.html" class="nav-item"><span>📚</span><span>Course Hub</span></a></li>
+    <li><a href="tasks.html" class="nav-item"><span>✅</span><span>Assignments & Tests</span></a></li>
+    <li><a href="projects.html" class="nav-item"><span>👥</span><span>Group Projects</span></a></li>
+    <li><a href="analytics.html" class="nav-item"><span>📈</span><span>Study Analytics</span></a></li>
+  </ul>
+  <div class="sidebar-footer"><strong>RUET Student Workspace</strong><div style="font-size:.72rem;color:#94a3b8;">Profile-aware scheduling</div></div>
+</aside>
+<div class="main-wrapper">
+<header class="topbar">
+  <div class="search-input-group"><span>🔍</span><input type="text" placeholder="Search UniFlow..."></div>
+  <div class="topbar-actions"><div class="user-profile"><div class="avatar">ST</div><div class="user-info"><div class="name">Student</div><div class="role">RUET CSE</div></div></div></div>
+</header>
+<main class="content-body">
+<div class="page-header"><div><h2>👤 Student Profile & Routine AI</h2><p>Tell UniFlow who you are, upload your routine, and let Smart AI detect your academic year, series, section and classes.</p></div></div>
+
+<div class="split-2col">
+<section class="card">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:16px;">Personal information</h3>
+<form id="profileForm">
+<div class="form-group"><label>Full name *</label><input id="profileFullName" class="form-control" required></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>Student ID / Roll</label><input id="profileStudentId" class="form-control" placeholder="e.g. 2103001"></div>
+<div class="form-group"><label>Department</label><input id="profileDepartment" class="form-control" value="Computer Science & Engineering"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>Program</label><input id="profileProgram" class="form-control" value="B.Sc. Engineering in CSE"></div>
+<div class="form-group"><label>Email</label><input id="profileEmail" type="email" class="form-control"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>Phone</label><input id="profilePhone" class="form-control"></div>
+<div class="form-group"><label>Section (optional)</label><input id="profileSection" class="form-control" placeholder="A / B"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group"><label>Current semester (optional)</label><input id="profileSemester" class="form-control" placeholder="Odd / Even"></div>
+<div class="form-group"><label>Academic year</label><div class="form-control" style="background:#f8fafc">Detected from routine below</div></div>
+</div>
+<button class="btn btn-primary" type="submit">Save personal information</button>
+<div id="profileStatus" style="display:none;margin-top:12px;font-size:.84rem;font-weight:700;"></div>
+</form>
+</section>
+
+<section class="card">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px;">📤 Upload routine</h3>
+<p style="color:#64748b;font-size:.86rem;line-height:1.55;margin-bottom:16px;">Upload the official class routine as PDF, JPG, PNG or WEBP. Smart AI reads the routine and detects your academic year/series before building a personalized schedule.</p>
+<div class="form-group"><label for="routineFile">Routine file</label><input id="routineFile" class="form-control" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,application/pdf,image/png,image/jpeg,image/webp"></div>
+<button class="btn btn-primary" type="button" onclick="uploadRoutineFile()">✨ Analyze routine with Smart AI</button>
+<div id="routineUploadStatus" style="margin-top:12px;font-size:.84rem;font-weight:700;"></div>
+<div style="margin-top:18px;padding:14px;background:#eff6ff;border-radius:12px;border:1px solid #bfdbfe;">
+<strong style="color:#1e3a8a;">How it works</strong>
+<ul style="margin:8px 0 0 18px;color:#475569;font-size:.82rem;line-height:1.7;"><li>AI reads the uploaded routine.</li><li>It identifies series/year, semester and section.</li><li>It extracts class rows for your calendar/course plan.</li><li>Official RUET/CSE pages are preferred for verification.</li></ul>
+</div>
+</section>
+</div>
+
+<section id="routineAnalysis" class="card" style="display:none;border-color:#93c5fd;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+<div><h3 style="font-size:1.2rem;font-weight:800;color:#1e3a8a;">🧠 Detected academic profile</h3><p style="font-size:.82rem;color:#64748b;margin-top:4px;">Review the AI result before relying on it for academic planning.</p></div>
+<div class="badge" style="background:#dcfce7;color:#166534;">Smart AI</div>
+</div>
+<div class="metrics-grid" style="margin-top:18px;">
+<div class="card"><div class="metric-title">Academic year</div><div id="detectedAcademicYear" class="metric-value">—</div></div>
+<div class="card"><div class="metric-title">Series</div><div id="detectedSeries" class="metric-value">—</div></div>
+<div class="card"><div class="metric-title">Semester</div><div id="detectedSemester" class="metric-value">—</div></div>
+<div class="card"><div class="metric-title">Section</div><div id="detectedSection" class="metric-value">—</div></div>
+<div class="card"><div class="metric-title">Confidence</div><div id="detectedConfidence" class="metric-value">—</div></div>
+</div>
+<h4 style="margin:22px 0 10px;font-weight:800;">Extracted classes</h4>
+<div id="routineCourses"></div>
+</section>
+
+<section class="card">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px;">🔗 RUET knowledge sources</h3>
+<p id="sourceStatus" style="font-size:.84rem;color:#64748b;margin-bottom:14px;">Smart AI is configured to prioritize official RUET/CSE information.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<a class="btn btn-secondary" href="https://www.ruet.ac.bd/" target="_blank" rel="noopener">RUET Official Website ↗</a>
+<a class="btn btn-secondary" href="https://www.cse.ruet.ac.bd/notice" target="_blank" rel="noopener">RUET CSE Notices ↗</a>
+<a class="btn btn-secondary" href="https://www.cse.ruet.ac.bd/page/class-routine" target="_blank" rel="noopener">CSE Class Routine ↗</a>
+<a class="btn btn-secondary" href="https://ruetcsearchive.vercel.app/" target="_blank" rel="noopener">RUET CSE Archive ↗</a>
+</div>
+</section>
+</main></div></div>
+<script src="app.js"></script>
+</body></html>
