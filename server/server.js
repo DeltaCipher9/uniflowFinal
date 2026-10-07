@@ -321,7 +321,7 @@ app.post('/api/routine/analyze', requireAuth, async (req, res) => {
   }
 
   try {
-    const model = process.env.OPENAI_MODEL || 'gpt-6-luna';
+    const model = process.env.OPENAI_MODEL || 'gpt-5.6';
     let content;
     const instructions = `You are UniFlow Smart AI for a RUET CSE student.
 Analyze the uploaded class routine carefully. Identify the student's academic series/year from labels such as "2024 Series", "2023 Series", "1st Year", "2nd Year", etc.
@@ -375,10 +375,23 @@ Do not invent values. If the routine contains multiple years, choose the year/se
     });
     const result = await ai.json();
     if (!ai.ok) throw new Error(result.error?.message || 'Smart AI analysis failed');
-    const raw = result.output_text || '';
-    const match = raw.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Smart AI returned an unreadable result.');
-    const analysis = JSON.parse(match[0]);
+    const raw = typeof result.output_text === 'string'
+  ? result.output_text
+  : (result.output || [])
+      .flatMap(item => Array.isArray(item.content) ? item.content : [])
+      .map(part => typeof part.text === 'string' ? part.text : '')
+      .filter(Boolean)
+      .join('\n');
+
+const match = raw.match(/\{[\s\S]*\}/);
+if (!match) throw new Error('Smart AI returned an unreadable result.');
+
+let analysis;
+try {
+  analysis = JSON.parse(match[0]);
+} catch {
+  throw new Error('Smart AI returned invalid JSON.');
+}
     if (!analysis.series) analysis.series = inferredFromName || null;
 
     data.routine = {
