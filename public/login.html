@@ -11,58 +11,62 @@
   <link rel="stylesheet" href="auth.css">
 </head>
 <body class="auth-body">
-
   <div class="auth-card">
     <div class="auth-brand">
       <div class="logo-badge">🎓</div>
-      <div>
-        <h1>UniFlow</h1>
-        <span>University Life OS</span>
-      </div>
+      <div><h1>UniFlow</h1><span>University Life OS</span></div>
     </div>
 
-    <div class="auth-tabs">
+    <div id="authTabs" class="auth-tabs">
       <button type="button" id="tabLogin" class="auth-tab active">Log in</button>
       <button type="button" id="tabSignup" class="auth-tab">Create account</button>
     </div>
 
     <div id="authError" class="auth-error" role="alert" style="display:none;"></div>
+    <div id="authSuccess" class="auth-success" role="status" style="display:none;"></div>
 
-    <!-- LOG IN -->
     <form id="loginForm" autocomplete="on">
-      <div class="form-group">
-        <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" class="form-control" autocomplete="email" required>
-      </div>
+      <div class="form-group"><label for="loginEmail">Email</label><input type="email" id="loginEmail" class="form-control" autocomplete="email" required></div>
       <div class="form-group">
         <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" class="form-control" autocomplete="current-password" required>
+        <div class="password-wrap"><input type="password" id="loginPassword" class="form-control" autocomplete="current-password" required><button type="button" class="password-toggle" data-target="loginPassword" aria-label="Show password">Show</button></div>
       </div>
       <button type="submit" class="btn btn-primary auth-submit">Log in</button>
+      <button type="button" id="forgotLink" class="auth-link">Forgot password?</button>
     </form>
 
-    <!-- SIGN UP -->
+    <form id="forgotForm" style="display:none;" autocomplete="on">
+      <p class="auth-help">Enter your account email. If an account exists, we'll send you a password reset link.</p>
+      <div class="form-group"><label for="forgotEmail">Email</label><input type="email" id="forgotEmail" class="form-control" autocomplete="email" required></div>
+      <button type="submit" class="btn btn-primary auth-submit">Send reset link</button>
+      <button type="button" id="backToLogin" class="auth-link">Back to log in</button>
+    </form>
+
+    <form id="resetForm" style="display:none;" autocomplete="off">
+      <p class="auth-help">Choose a new password. This reset link expires after 30 minutes.</p>
+      <div class="form-group">
+        <label for="resetPassword">New password</label>
+        <div class="password-wrap"><input type="password" id="resetPassword" class="form-control" minlength="8" maxlength="72" required><button type="button" class="password-toggle" data-target="resetPassword" aria-label="Show password">Show</button></div>
+      </div>
+      <div class="form-group">
+        <label for="resetPasswordConfirm">Confirm password</label>
+        <div class="password-wrap"><input type="password" id="resetPasswordConfirm" class="form-control" minlength="8" maxlength="72" required><button type="button" class="password-toggle" data-target="resetPasswordConfirm" aria-label="Show password">Show</button></div>
+      </div>
+      <button type="submit" class="btn btn-primary auth-submit">Set new password</button>
+      <button type="button" id="resetBackLogin" class="auth-link">Back to log in</button>
+    </form>
+
     <form id="signupForm" autocomplete="on" style="display:none;">
+      <div class="form-group"><label for="signupName">Full name</label><input type="text" id="signupName" class="form-control" autocomplete="name" maxlength="80" required></div>
+      <div class="form-group"><label for="signupProgram">Program / Department <span class="muted-label">(optional)</span></label><input type="text" id="signupProgram" class="form-control" placeholder="e.g. B.Sc Computer Science" maxlength="100"></div>
+      <div class="form-group"><label for="signupEmail">Email</label><input type="email" id="signupEmail" class="form-control" autocomplete="email" required></div>
       <div class="form-group">
-        <label for="signupName">Full name</label>
-        <input type="text" id="signupName" class="form-control" autocomplete="name" maxlength="80" required>
-      </div>
-      <div class="form-group">
-        <label for="signupProgram">Program / Department <span style="font-weight:500;color:#94a3b8;">(optional)</span></label>
-        <input type="text" id="signupProgram" class="form-control" placeholder="e.g. B.Sc Computer Science" maxlength="100">
-      </div>
-      <div class="form-group">
-        <label for="signupEmail">Email</label>
-        <input type="email" id="signupEmail" class="form-control" autocomplete="email" required>
-      </div>
-      <div class="form-group">
-        <label for="signupPassword">Password <span style="font-weight:500;color:#94a3b8;">(at least 8 characters)</span></label>
-        <input type="password" id="signupPassword" class="form-control" autocomplete="new-password" minlength="8" maxlength="72" required>
+        <label for="signupPassword">Password <span class="muted-label">(at least 8 characters)</span></label>
+        <div class="password-wrap"><input type="password" id="signupPassword" class="form-control" autocomplete="new-password" minlength="8" maxlength="72" required><button type="button" class="password-toggle" data-target="signupPassword" aria-label="Show password">Show</button></div>
       </div>
       <button type="submit" class="btn btn-primary auth-submit">Create my account</button>
     </form>
   </div>
-
   <script src="login.js"></script>
 </body>
 </html>
